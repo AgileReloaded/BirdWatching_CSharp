@@ -2,13 +2,25 @@
 {
     public class Location
     {
-        public int x = 0;
-        public int y = 0;
+        public int X;
+        public int Y;
+        public int Z;
 
         public Location(int x, int y)
+            : this(x, y, 0) { }
+
+        public Location(int x, int y, int z)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = 0;
+            Z = 0;
+            Y = y;
+            Z = z;
+        }
+
+        public bool Equals(Location otherLocation)
+        {
+            return (otherLocation.X == X) && (otherLocation.Y == Y) && (otherLocation.Z == Z);
         }
     }
 }

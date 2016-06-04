@@ -50,12 +50,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="src\BirdList.cs" />
     <Compile Include="src\Duck.cs" />
     <Compile Include="src\Bird.cs" />
     <Compile Include="src\Chicken.cs" />
     <Compile Include="src\FieldSize.cs" />
     <Compile Include="src\GameField.cs" />
+    <Compile Include="src\IPlacingStrategy.cs" />
     <Compile Include="src\Location.cs" />
+    <Compile Include="src\NullPlacingStrategy.cs" />
+    <Compile Include="src\PlacingStrategyFactory.cs" />
+    <Compile Include="src\RandomPlacingStrategy.cs" />
     <Compile Include="test\BirdWatchingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

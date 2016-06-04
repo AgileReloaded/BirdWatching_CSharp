@@ -2,22 +2,22 @@
 {
     public class FieldSize
     {
-        public int width { get; private set; }
-        public int height { get; private set; }
-        public int depth { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public int Depth { get; private set; }
 
 
         public FieldSize(int width, int height, int depth)
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
+            Width = width;
+            Height = height;
+            Depth = depth;
         }
 
 
-        public bool isWithinField(int h, int x, int y)
+        public bool IsWithinField(Location location)
         {
-            return h >= 0 && h <= depth && (x >= 0 && x <= width && y >= 0 && y <= height);
+            return location.Z >= 0 && location.Z <= Depth && (location.X >= 0 && location.X <= Width && location.Y >= 0 && location.Y <= Height);
         }
     }
 }

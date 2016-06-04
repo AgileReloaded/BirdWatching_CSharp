@@ -4,13 +4,16 @@ namespace BirdWatching
 {
     public class Chicken : Bird
     {
-        public override void sing()
+        public override void Sing()
         {
             Console.WriteLine("Cluck");
         }
 
-        public override int Height { get { throw new Exception("I can't fly"); } }
-
+        public void SetLocation(Location location)
+        {
+            location.Z = 0;
+            Location = location;
+        }
     }
 }
 

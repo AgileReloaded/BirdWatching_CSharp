@@ -1,119 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BirdWatching
+﻿namespace BirdWatching
 {
     public class GameField
     {
-   
+
         public enum PlacingMode
         {
-            Custom, Random
+            Custom,
+            Random
         }
 
-        IList<Bird> birds;
-        int width;
-        int height;
-        int depth;
-        bool gameStarted;
-        private FieldSize fieldSize;
+        BirdList _birds;
+        bool _gameStarted;
+        FieldSize _fieldSize;
+        PlacingStrategyFactory _placingStrategyFactory;
 
-        public GameField(int width, int height, int depth, FieldSize fieldSize)
+
+        public GameField(FieldSize fieldSize)
+            : this(fieldSize, new PlacingStrategyFactory())
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
-            this.fieldSize = fieldSize;
-            birds = new List<Bird>();
         }
 
-        public void addBird(Bird b)
+
+
+        public GameField(FieldSize fieldSize, PlacingStrategyFactory placingStrategyFactory)
         {
-            birds.Add(b);
+            _placingStrategyFactory = placingStrategyFactory;
+            _fieldSize = fieldSize;
+            _birds = new BirdList();
         }
+
+        public void AddBird(Bird b)
+        {
+            _birds.Add(b);
+        }
+
 
         //Start the game
-        public bool startGame(PlacingMode pm)
+        public bool StartGame(PlacingMode pm)
         {
-            try
-            {
-                placeBirds(pm);
-                gameStarted = (birds.Count > 0 && isGameFieldValid());
-            }
-            catch (Exception e)
-            {
-                gameStarted = false;
-            }
-            return gameStarted;
+            _placingStrategyFactory.Create(pm, _fieldSize).Place(_birds);
+            _gameStarted = IsGameStarted();
+            return _gameStarted;
         }
 
-        //Shot to a bird
-        public bool shot(int x, int y, int h)
+        private bool IsGameStarted()
         {
-            bool hit = false;
-            if (gameStarted)
-            {
-                foreach (Bird bird in birds)
-                {
-                    int height = 0;
-                    if (!(bird is Chicken))
-                        height = bird.Height;
-                    Location location = bird.Location;
-                    hit = location.x == x && location.y == y && height == h;
-                    if (hit)
-                    {
-                        bird.sing();
-                        break;
-                    }
-                }
-            }
-            return hit;
+            return _birds.AreAllBirdsPlacedWithinField(_fieldSize);
         }
 
-        //Place the birds on the fields
-        private void placeBirds(PlacingMode type)
+        public bool Shot(Location shotLocation)
         {
-
-            //Random Distribution
-            if (type == PlacingMode.Random)
-            {
-                foreach (Bird bird in birds)
-                {
-                    Location location = new Location(new Random().Next(this.width), new Random().Next(this.height));
-                    bird.Location = location;
-                    if (!(bird is Chicken))
-                        bird.Height = new Random().Next(this.depth);
-                }
-            }
-            //Custom Distribution
-            else if (type == PlacingMode.Custom)
-            {
-
-            }
+            return _birds.AnyBirdWasHit(shotLocation) && _gameStarted;
         }
-
-        //Check if the GameField is Valid
-        private bool isGameFieldValid()
-        {
-            bool isValid = true;
-            foreach (Bird bird in birds)
-            {
-                int h = 0;
-                if (!(bird is Chicken))
-                    h= bird.Height;
-                Location location = bird.Location;
-                int x = location.x;
-                int y = location.y;
-                isValid = fieldSize.isWithinField(h, x, y);
-                if (!isValid)
-                    break;
-            }
-            return isValid;
-
-        }
-
 
     }
-
 }
 

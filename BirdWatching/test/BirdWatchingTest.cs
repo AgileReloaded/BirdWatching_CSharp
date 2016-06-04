@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BirdWatching
 {
@@ -7,90 +6,85 @@ namespace BirdWatching
     public class BirdWatchingTest
     {
 
-        private GameField field;
+        private GameField _field;
 
         [TestInitialize]
         public void Setup()
         {
-            field = new GameField(10, 5, 3, new FieldSize(10, 5, 3));
+            _field = new GameField(new FieldSize(10, 5, 3));
         }
 
         [TestMethod]
-        public void randomPlacingShouldStartGame()
+        public void RandomPlacingShouldStartGame()
         {
-            field.addBird(new Chicken());
-            field.addBird(new Duck());
-            Assert.IsTrue(field.startGame(GameField.PlacingMode.Random));
+            _field.AddBird(new Chicken());
+            _field.AddBird(new Duck());
+            Assert.IsTrue(_field.StartGame(GameField.PlacingMode.Random));
         }
 
         [TestMethod]
-        public void customPlacingShouldStartGameWithValidBirdsPlacing()
+        public void CustomPlacingShouldStartGameWithValidBirdsPlacing()
         {
             Bird chicken = new Chicken();
             chicken.Location = new Location(0, 0);
 
             Bird duck = new Duck();
-            duck.Location = new Location(10, 5);
-            duck.Height = 3;
+            duck.Location = new Location(10, 5, 3);
 
-            field.addBird(chicken);
-            field.addBird(duck);
+            _field.AddBird(chicken);
+            _field.AddBird(duck);
 
-            Assert.IsTrue(field.startGame(GameField.PlacingMode.Custom));
+            Assert.IsTrue(_field.StartGame(GameField.PlacingMode.Custom));
         }
 
         [TestMethod]
-        public void customPlacingShouldNotStartGameWithInvalidBirdsPlacing()
+        public void CustomPlacingShouldNotStartGameWithInvalidBirdsPlacing()
         {
             Bird chicken = new Chicken();
             chicken.Location = new Location(11, 0);
 
             Bird duck = new Duck();
-            duck.Location = new Location(10, 5);
-            duck.Height = 4;
+            duck.Location = new Location(10, 5, 4);
 
-            field.addBird(chicken);
-            field.addBird(duck);
+            _field.AddBird(chicken);
+            _field.AddBird(duck);
 
-            Assert.IsFalse(field.startGame(GameField.PlacingMode.Custom));
+            Assert.IsFalse(_field.StartGame(GameField.PlacingMode.Custom));
         }
 
         [TestMethod]
-        public void rightShotShouldFailIfGameIsNotStarted()
+        public void RightShotShouldFailIfGameIsNotStarted()
         {
             Bird duck = new Duck();
-            duck.Location = new Location(10, 5);
-            duck.Height = 3;
+            duck.Location = new Location(10, 5, 3);
 
-            field.addBird(duck);
+            _field.AddBird(duck);
 
-            Assert.IsFalse(field.shot(10, 5, 3));
+            Assert.IsFalse(_field.Shot(new Location(10, 5, 3)));
         }
 
 
         [TestMethod]
-        public void rightShotShouldHitABird()
+        public void RightShotShouldHitABird()
         {
             Bird duck = new Duck();
-            duck.Location = new Location(10, 5);
-            duck.Height = 3;
+            duck.Location = new Location(10, 5, 3);
 
-            field.addBird(duck);
-            field.startGame(GameField.PlacingMode.Custom);
+            _field.AddBird(duck);
+            _field.StartGame(GameField.PlacingMode.Custom);
 
-            Assert.IsTrue(field.shot(10, 5, 3));
+            Assert.IsTrue(_field.Shot(new Location(10, 5, 3)));
         }
 
         [TestMethod]
-        public void wrongShotShouldMissABird()
+        public void WrongShotShouldMissABird()
         {
             Bird duck = new Duck();
-            duck.Location = new Location(10, 5);
-            duck.Height = 3;
+            duck.Location = new Location(10, 5, 3);
 
-            field.addBird(duck);
+            _field.AddBird(duck);
 
-            Assert.IsFalse(field.shot(9, 5, 3));
+            Assert.IsFalse(_field.Shot(new Location(9, 5, 3)));
         }
     }
 }
