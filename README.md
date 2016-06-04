@@ -1,4 +1,4 @@
-# BirdWatching Refactor Game (C# Version)**
+# BirdWatching Refactor Game (C# Version)
 
 The goal of the game is to refactor the code in the master branch following the SOLID PRINCIPLES.
 You can find a possible solution in the project branches.
