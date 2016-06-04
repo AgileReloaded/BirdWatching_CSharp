@@ -1,4 +1,4 @@
-# PASSI REFACTORING
+  PASSI REFACTORING
 
 rimosso width da GameField
 rimosso height da GameField
